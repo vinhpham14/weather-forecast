@@ -10,8 +10,9 @@ import XCTest
 import SearchForecast
 
 
-
 final class RemoteSearchForecastRepositoryTests: XCTestCase {
+    
+    private let kRootKey = "items"
     
     func test_init_noRequestHappens() {
         let (_, api) = makeSUT()
@@ -39,11 +40,28 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
         }
     }
     
-    func test_doSearch_receiveInvalidDataError() {
+    func test_doSearch_receiveErrorOn200HTTPResponseWithInvalidDataJSON() {
         let (sut, api) = makeSUT()
         
         expectSearch(by: sut, toCompleteWith: failure(.invalidJSON)) {
             api.completeWith(statusCode: 200, data: Data("invalid data".utf8))
+        }
+    }
+    
+    func test_doSearch_receiveEmptyListOn200HTTPResponseWithEmptyJSON() {
+        let (sut, api) = makeSUT()
+        
+        expectSearch(by: sut, toCompleteWith: .success([])) {
+            api.completeWith(statusCode: 200, data: makeItemJson([]))
+        }
+    }
+    
+    func test_doSearch_receiveEmptyListItemsOn200HTTPResponseWithJSONItems() {
+        let (sut, api) = makeSUT()
+        let expectedItems = (0..<10).map({ _ in makeRandomItem() })
+
+        expectSearch(by: sut, toCompleteWith: .success(expectedItems.map({ $0.model }))) {
+            api.completeWith(statusCode: 200, data: makeItemJson(expectedItems.map({ $0.json })))
         }
     }
     
@@ -78,11 +96,31 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
         
         action()
         
-        wait(for: [exp], timeout: 1.0)
+        wait(for: [exp], timeout: 5.0)
     }
     
     private func failure(_ error: RemoteSearchForecastRepository.Error) -> SearchForecastResult {
         return .failure(error)
+    }
+    
+    private func makeRandomItem() -> (model: WeatherForecastItem, json: [String: Any]) {
+        let model = WeatherForecastItem.random()
+        let dateFormatter = ISO8601DateFormatter()
+        let json: [String: Any] = [
+            "id": model.id.uuidString,
+            "date": dateFormatter.string(from: model.date),
+            "pressure": model.pressure,
+            "humidity": model.humidity,
+            "temperature": model.temperature,
+            "description": model.description,
+        ]
+        return (model, json)
+    }
+    
+    private func makeItemJson(_ items: [[String: Any]]? = nil) -> Data {
+        let itemJson = items ?? (0...10).map({ _ in makeRandomItem() }).map({ $0.json })
+        let json = [kRootKey: itemJson]
+        return try! JSONSerialization.data(withJSONObject: json)
     }
     
     private func makeSearchParameters(cityName: String? = nil, maximumForecastDay: Int? = nil, unit: UnitTemperature? = nil) -> SearchParameters {
@@ -118,5 +156,19 @@ class APIClientSpy: APIClient {
             headerFields: nil
         )!
         completions[index](.success((data, response)))
+    }
+}
+
+private extension WeatherForecastItem {
+    static func random() -> WeatherForecastItem {
+        let date = Int(Date().timeIntervalSince1970)
+        return WeatherForecastItem(
+            id: UUID(),
+            date: Date.init(timeIntervalSince1970: Double(Int.random(in: (date - 1000)...date))),
+            pressure: Double.random(in: 0...100),
+            humidity: Double.random(in: 0...100),
+            temperature: Double.random(in: 0...100),
+            description: "\(Double.random(in: 0...100))"
+        )
     }
 }

@@ -14,8 +14,10 @@ public final class WeatherForecastItemMapper {
     }
     
     static func map(_ data: Data, from response: HTTPURLResponse) throws -> [RemoteWeatherForecastItem] {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
         guard response.statusCode == 200,
-            let root = try? JSONDecoder().decode(Root.self, from: data) else {
+            let root = try? decoder.decode(Root.self, from: data) else {
             throw RemoteSearchForecastRepository.Error.invalidJSON
         }
         return root.items
