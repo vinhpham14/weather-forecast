@@ -16,6 +16,7 @@ public enum SearchForecastResult {
 }
 
 public class RemoteSearchForecastRepository {
+    typealias SearchParameters = (cityName: String, maximumForecastDay: Int, unit: UnitTemperature)
     private let url: URL
     private let apiClient: APIClient
     
@@ -24,7 +25,7 @@ public class RemoteSearchForecastRepository {
         self.apiClient = apiClient
     }
     
-    func searchForecast(cityName: String, completion: @escaping (SearchForecastResult) -> Void) {
+    func searchForecast(_ parameters: SearchParameters, completion: @escaping (SearchForecastResult) -> Void) {
         apiClient.get(from: url, completion: { result in
             switch result {
             case let .failure(err):
@@ -66,37 +67,28 @@ class RemoteSearchForecastRepositoryTests: XCTestCase {
     }
     
     func test_doSearchTwice_requestHappendsTwice() {
-        let url = randomURL
+        let url = anyURL
         let (sut, api) = makeSUT(url: url)
         
-        sut.searchForecast(cityName: randomCityName, completion: { _ in })
-        sut.searchForecast(cityName: randomCityName, completion: { _ in })
+        sut.searchForecast(makeSearchParameters()) { _ in }
+        sut.searchForecast(makeSearchParameters()) { _ in }
         
         XCTAssertEqual(api.requestedURLs, [url, url])
     }
     
     func test_doSearch_receiveErrorOnAPIClient() {
-        let url = randomURL
+        let url = anyURL
         let (sut, api) = makeSUT(url: url)
         let err = anyError
-        var capturedErr: NSError?
         
-        let exp = expectation(description: "Wait for searching completion.")
-        sut.searchForecast(cityName: randomCityName, completion: { result in
-            if case let .failure(err) = result {
-                capturedErr = err as NSError
-            }
-            exp.fulfill()
-        })
-        
-        api.completeWith(error: err)
-        
-        wait(for: [exp], timeout: 1.0)
-        XCTAssertEqual(api.requestedURLs, [url])
-        XCTAssertEqual(capturedErr, err as NSError)
+        expectSearch(by: sut, toCompleteWith: .failure(err)) {
+            api.completeWith(error: err)
+        }
     }
     
     // MARK: - Helpers
+    
+    private typealias SearchParameters = RemoteSearchForecastRepository.SearchParameters
     
     private func makeSUT(url: URL = URL(string: "https://any-url.com")!) -> (sut: RemoteSearchForecastRepository, api: APIClientSpy) {
         let api = APIClientSpy()
@@ -104,8 +96,35 @@ class RemoteSearchForecastRepositoryTests: XCTestCase {
         return (sut, api)
     }
     
-    private var randomCityName: String { "city \(randomNumber)" }
-    private var randomURL: URL { URL(string: "https://any-url.com/(\(randomNumber)")! }
-    private var randomNumber: Int { Int.random(in: 1...100) }
+    private func expectSearch(_ parameters: SearchParameters? = nil, by sut: RemoteSearchForecastRepository, toCompleteWith expectedResult: SearchForecastResult, withAction action: () -> Void, file: StaticString = #file, line: UInt = #line) {
+        
+        let params = parameters ?? makeSearchParameters()
+        let exp = expectation(description: "Wait for searching completion")
+        
+        sut.searchForecast(params) { result in
+            switch (expectedResult, result) {
+            case let (.failure(err1), .failure(err2)):
+                XCTAssertEqual(err1 as NSError, err2 as NSError, file: file, line: line)
+            case let (.success(arr1), .success(arr2)):
+                XCTAssertEqual(arr1, arr2, file: file, line: line)
+            default:
+                XCTFail("Failed to match expected result.", file: file, line: line)
+            }
+            exp.fulfill()
+        }
+        
+        action()
+        
+        wait(for: [exp], timeout: 1.0)
+    }
+    
+    private func makeSearchParameters(cityName: String? = nil, maximumForecastDay: Int? = nil, unit: UnitTemperature? = nil) -> SearchParameters {
+        return (cityName ?? anyCityName, maximumForecastDay ?? anyMaximumForecastDay, unit ?? anyUnit)
+    }
+    
+    private var anyUnit: UnitTemperature { .celsius }
+    private var anyCityName: String { "city" }
+    private var anyURL: URL { URL(string: "https://any-url.com")! }
+    private var anyMaximumForecastDay: Int { 7 }
     private var anyError: Error { NSError(domain: "error", code: 0, userInfo: nil) }
 }
