@@ -14,8 +14,16 @@ public struct WeatherForecastItem {
     public let pressure: Double
     public let humidity: Double
     public let temperature: Double
-    public let temperatureUnit: UnitTemperature
     public let description: String
+    
+    public init( id: UUID, date: Date, pressure: Double, humidity: Double, temperature: Double, description: String) {
+        self.id = id
+        self.date = date
+        self.pressure = pressure
+        self.humidity = humidity
+        self.temperature = temperature
+        self.description = description
+    }
 }
 
 extension WeatherForecastItem: Equatable {
