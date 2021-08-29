@@ -8,11 +8,11 @@
 import Foundation
 
 
-struct WeatherForecastItem {
-    let date: Date
-    let pressure: Double
-    let humidity: Double
-    let temperature: Double
-    let temperatureUnit: UnitTemperature
-    let description: String
+public struct WeatherForecastItem {
+    public let date: Date
+    public let pressure: Double
+    public let humidity: Double
+    public let temperature: Double
+    public let temperatureUnit: UnitTemperature
+    public let description: String
 }
