@@ -67,23 +67,23 @@ final class LocalSearchForecastRepositoryTests: XCTestCase {
     
     func test_save_receiveErrorCausedByStoreError() {
         let (sut, store) = makeSUT()
-        let key = anyKey()
-        let items = uniqueForcasts()
-        let currentDate = Date()
         let error = anyNSError()
-        var capturedError: NSError?
         
-        let exp = expectation(description: "Wait for save completion")
-        sut.save(items.local, timestamp: currentDate, for: key) {
-            capturedError = $0 as NSError?
-            exp.fulfill()
+        expectSave(with: sut, by: store, toCompleteWith: error) {
+            store.completeSaveWith(with: error)
         }
-        store.completeSaveWith(with: anyNSError())
-        
-        wait(for: [exp], timeout: 1.0)
-        XCTAssertEqual(capturedError, error)
-        XCTAssertEqual(store.receivedMessages, [.save(items.local, timestamp: currentDate, key: key)])
     }
+    
+    func test_save_successfully() {
+        let (sut, store) = makeSUT()
+        let error = anyNSError()
+        
+        expectSave(with: sut, by: store, toCompleteWith: nil) {
+            store.completeSaveWith(with: nil)
+        }
+    }
+    
+    
     
     // MARK: - Helpers
     
@@ -93,10 +93,29 @@ final class LocalSearchForecastRepositoryTests: XCTestCase {
         return (sut, store)
     }
     
-    private func uniqueForcasts() -> (local: [LocalWeatherForecastItem], domain: [WeatherForecastItem]) {
+    private func uniqueForcasts() -> [LocalWeatherForecastItem] {
         let items: [WeatherForecastItem] = [.random(), .random()]
         let localItems = items.map({ LocalWeatherForecastItem(id: $0.id, date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) })
-        return (localItems, items)
+        return localItems
+    }
+    
+    private func expectSave(with sut: LocalSearchForecastRepository, by store: ForecastStoreSpy, toCompleteWith error: NSError?, with action: () -> Void, file: StaticString = #file, line: UInt = #line) {
+        
+        var capturedError: NSError?
+        let items = uniqueForcasts()
+        let currentDate = Date()
+        let key = anyKey()
+        let exp = expectation(description: "Wait for save completion")
+        
+        sut.save(items, timestamp: currentDate, for: key, completion: {
+            capturedError = $0 as NSError?
+            exp.fulfill()
+        })
+        action()
+        
+        wait(for: [exp], timeout: 1.0)
+        XCTAssertEqual(capturedError, error, file: file, line: line)
+        XCTAssertEqual(store.receivedMessages, [.save(items, timestamp: currentDate, key: key)], file: file, line: line)
     }
     
     func anyNSError() -> NSError {
@@ -120,12 +139,8 @@ class ForecastStoreSpy: ForecastStore {
     private var saveCompletions = [SaveCompletion]()
     private var getCompletions = [GetCompletion]()
     
-    func completeSaveWith(with error: Error, at index: Int = 0) {
+    func completeSaveWith(with error: Error?, at index: Int = 0) {
         saveCompletions[0](error)
-    }
-    
-    func completeSaveSuccessfullyWith(at index: Int = 0) {
-        saveCompletions[0](nil)
     }
     
     func completeGetWith(with error: Error, at index: Int = 0) {
