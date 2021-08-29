@@ -55,7 +55,6 @@ final class LocalSearchForecastRepositoryTests: XCTestCase {
     
     func test_load_receiveEmptyResult() {
         let (sut, store) = makeSUT()
-        let date = Date()
         var capturedItemsCount: Int = -1
         
         let exp = expectation(description: "Wait for load completion.")
@@ -65,7 +64,7 @@ final class LocalSearchForecastRepositoryTests: XCTestCase {
             }
             exp.fulfill()
         })
-        store.completeGetSuccessfullyWith(with: [], timestamp: date)
+        store.completeGetWithEmptyItems()
         
         wait(for: [exp], timeout: 1.0)
         XCTAssertEqual(capturedItemsCount, 0)
@@ -96,7 +95,7 @@ final class LocalSearchForecastRepositoryTests: XCTestCase {
     
     private func makeSUT() -> (sut: LocalSearchForecastRepository, store: ForecastStoreSpy) {
         let store = ForecastStoreSpy()
-        let sut = LocalSearchForecastRepository(store: store)
+        let sut = LocalSearchForecastRepository(store: store, currentDate: { Date() })
         return (sut, store)
     }
     
@@ -135,6 +134,7 @@ final class LocalSearchForecastRepositoryTests: XCTestCase {
 }
 
 
+// MARK: - ForecastStoreSpy
 class ForecastStoreSpy: ForecastStore {
     
     enum Message: Equatable {

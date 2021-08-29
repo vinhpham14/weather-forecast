@@ -22,17 +22,23 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
     
     func test_doSearchTwice_requestHappendsTwice() {
         let url = anyURL
-        let (sut, api) = makeSUT(url: url)
+        let (sut, api) = makeSUT(baseURL: url)
+        let params = makeSearchParameters()
+        let searchURL = ForecastEndpoint(baseURL: url).search(
+            keyword: params.cityName,
+            maximumForcastDay: params.maximumForecastDay,
+            unit: params.unit.description
+        )
         
-        sut.searchForecast(makeSearchParameters()) { _ in }
-        sut.searchForecast(makeSearchParameters()) { _ in }
+        sut.searchForecast(params) { _ in }
+        sut.searchForecast(params) { _ in }
         
-        XCTAssertEqual(api.requestedURLs, [url, url])
+        XCTAssertEqual(api.requestedURLs, [searchURL, searchURL])
     }
     
     func test_doSearch_receiveErrorByAPIClient() {
         let url = anyURL
-        let (sut, api) = makeSUT(url: url)
+        let (sut, api) = makeSUT(baseURL: url)
         
         expectSearch(by: sut, toCompleteWith: failure(.unexpected)) {
             let err = anyError
@@ -69,9 +75,9 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
     
     private typealias SearchParameters = RemoteSearchForecastRepository.SearchParameters
     
-    private func makeSUT(url: URL? = nil) -> (sut: RemoteSearchForecastRepository, api: APIClientSpy) {
+    private func makeSUT(baseURL: URL? = nil) -> (sut: RemoteSearchForecastRepository, api: APIClientSpy) {
         let api = APIClientSpy()
-        let sut = RemoteSearchForecastRepository(url: url ?? anyURL, apiClient: api)
+        let sut = RemoteSearchForecastRepository(endpoint: ForecastEndpoint(baseURL: anyURL), apiClient: api)
         return (sut, api)
     }
     

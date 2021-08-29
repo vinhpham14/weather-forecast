@@ -9,7 +9,7 @@ import Foundation
 
 
 public final class RemoteSearchForecastRepository: SearchForecastRepository {
-    private let url: URL
+    private let endpoint: ForecastEndpoint
     private let apiClient: APIClient
     
     public enum Error: Swift.Error {
@@ -17,12 +17,18 @@ public final class RemoteSearchForecastRepository: SearchForecastRepository {
         case unexpected
     }
     
-    public init(url: URL, apiClient: APIClient) {
-        self.url = url
+    public init(endpoint: ForecastEndpoint, apiClient: APIClient) {
+        self.endpoint = endpoint
         self.apiClient = apiClient
     }
     
     public func searchForecast(_ parameters: SearchParameters, completion: @escaping (RemoteSearchForecastRepository.Result) -> Void) {
+        let url = endpoint.search(
+            keyword: parameters.cityName,
+            maximumForcastDay: parameters.maximumForecastDay,
+            unit: parameters.unit.description
+        
+        )
         apiClient.get(from: url, completion: { [weak self] result in
             guard self != nil else { return }
             
