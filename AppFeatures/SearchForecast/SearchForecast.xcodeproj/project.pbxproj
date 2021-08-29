@@ -23,6 +23,7 @@
 		3D63F27526DC0E3600BD10BD /* ForecastStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D63F27426DC0E3600BD10BD /* ForecastStore.swift */; };
 		3D63F27726DC0E5900BD10BD /* LocalSearchForecastRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D63F27626DC0E5900BD10BD /* LocalSearchForecastRepository.swift */; };
 		3D63F27926DC0F5C00BD10BD /* SearchForecastEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D63F27826DC0F5C00BD10BD /* SearchForecastEndpoint.swift */; };
+		3D63F28126DC190D00BD10BD /* InMemoryForecastStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D63F28026DC190D00BD10BD /* InMemoryForecastStore.swift */; };
 		A774A9CCE37C3D5E0D14AF26 /* Pods_SearchForecast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA34BC39CE8CB68400E8420 /* Pods_SearchForecast.framework */; };
 		AD595E8C93050C203EECD734 /* Pods_SearchForecastTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EBC6BA077833F6DD6E03CEE /* Pods_SearchForecastTests.framework */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 		3D63F27426DC0E3600BD10BD /* ForecastStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastStore.swift; sourceTree = "<group>"; };
 		3D63F27626DC0E5900BD10BD /* LocalSearchForecastRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSearchForecastRepository.swift; sourceTree = "<group>"; };
 		3D63F27826DC0F5C00BD10BD /* SearchForecastEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForecastEndpoint.swift; sourceTree = "<group>"; };
+		3D63F28026DC190D00BD10BD /* InMemoryForecastStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryForecastStore.swift; sourceTree = "<group>"; };
 		4E3EF3565B0B03EE2C7768B3 /* Pods-SearchForecast.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SearchForecast.debug.xcconfig"; path = "Target Support Files/Pods-SearchForecast/Pods-SearchForecast.debug.xcconfig"; sourceTree = "<group>"; };
 		5EBC6BA077833F6DD6E03CEE /* Pods_SearchForecastTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SearchForecastTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBCA660989B34A7B1F04D271 /* Pods-SearchForecastTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SearchForecastTests.release.xcconfig"; path = "Target Support Files/Pods-SearchForecastTests/Pods-SearchForecastTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -169,8 +171,9 @@
 		3D63F26926DBE9A200BD10BD /* SearchForecastLocal */ = {
 			isa = PBXGroup;
 			children = (
-				3D63F27226DC0E1800BD10BD /* LocalWeatherForecastItem.swift */,
 				3D63F27426DC0E3600BD10BD /* ForecastStore.swift */,
+				3D63F28026DC190D00BD10BD /* InMemoryForecastStore.swift */,
+				3D63F27226DC0E1800BD10BD /* LocalWeatherForecastItem.swift */,
 				3D63F27626DC0E5900BD10BD /* LocalSearchForecastRepository.swift */,
 			);
 			path = SearchForecastLocal;
@@ -371,6 +374,7 @@
 				3D63F27726DC0E5900BD10BD /* LocalSearchForecastRepository.swift in Sources */,
 				3D63F25E26DBD93C00BD10BD /* RemoteSearchForecastRepository.swift in Sources */,
 				3D63F26026DBD96900BD10BD /* WeatherForecastItemMapper.swift in Sources */,
+				3D63F28126DC190D00BD10BD /* InMemoryForecastStore.swift in Sources */,
 				3D63F25326DBB59B00BD10BD /* WeatherForecastItem.swift in Sources */,
 				3D63F25C26DBD90A00BD10BD /* APIClient.swift in Sources */,
 				3D63F26226DBD97C00BD10BD /* RemoteWeatherForecastItem.swift in Sources */,
