@@ -7,13 +7,8 @@
 
 import Foundation
 
-public enum SearchForecastResult {
-    case success(_ items: [WeatherForecastItem])
-    case failure(_ error: Swift.Error)
-}
 
-public final class RemoteSearchForecastRepository {
-    public typealias SearchParameters = (cityName: String, maximumForecastDay: Int, unit: UnitTemperature)
+public final class RemoteSearchForecastRepository: SearchForecastRepository {
     private let url: URL
     private let apiClient: APIClient
     
@@ -27,7 +22,7 @@ public final class RemoteSearchForecastRepository {
         self.apiClient = apiClient
     }
     
-    public func searchForecast(_ parameters: SearchParameters, completion: @escaping (SearchForecastResult) -> Void) {
+    public func searchForecast(_ parameters: SearchParameters, completion: @escaping (RemoteSearchForecastRepository.Result) -> Void) {
         apiClient.get(from: url, completion: { [weak self] result in
             guard self != nil else { return }
             

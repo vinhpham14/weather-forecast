@@ -75,7 +75,7 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
         return (sut, api)
     }
     
-    private func expectSearch(_ parameters: SearchParameters? = nil, by sut: RemoteSearchForecastRepository, toCompleteWith expectedResult: SearchForecastResult, withAction action: () -> Void, file: StaticString = #file, line: UInt = #line) {
+    private func expectSearch(_ parameters: SearchParameters? = nil, by sut: RemoteSearchForecastRepository, toCompleteWith expectedResult: RemoteSearchForecastRepository.Result, withAction action: () -> Void, file: StaticString = #file, line: UInt = #line) {
         let params = parameters ?? makeSearchParameters()
         let exp = expectation(description: "Wait for searching completion")
         
@@ -99,7 +99,7 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
         wait(for: [exp], timeout: 5.0)
     }
     
-    private func failure(_ error: RemoteSearchForecastRepository.Error) -> SearchForecastResult {
+    private func failure(_ error: RemoteSearchForecastRepository.Error) -> RemoteSearchForecastRepository.Result {
         return .failure(error)
     }
     
