@@ -13,9 +13,26 @@ public enum SearchForecastResult {
     case failure(_ error: Swift.Error)
 }
 
+public struct SearchForecastParameters {
+    public let cityName: String
+    public let maximumForecastDay: Int
+    public let unit: UnitTemperature
+    
+    public func encode() -> String {
+        return "q=\(cityName)&cnt=\(maximumForecastDay)&\(unit.description)"
+    }
+    
+    public init(_ cityName: String, _ maximumForecastDay: Int, _ unit: UnitTemperature) {
+        self.cityName = cityName
+        self.maximumForecastDay = maximumForecastDay
+        self.unit = unit
+    }
+}
+
 public protocol SearchForecastRepository {
-    typealias SearchParameters = (cityName: String, maximumForecastDay: Int, unit: UnitTemperature)
+    typealias SearchParameters = SearchForecastParameters
     typealias Result = SearchForecastResult
     
     func searchForecast(_ parameters: SearchParameters, completion: @escaping (SearchForecastResult) -> Void)
 }
+

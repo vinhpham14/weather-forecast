@@ -37,14 +37,16 @@ public protocol ForecastStore {
     typealias GetCompletion = (GetCachedResult) -> Void
     
     func save(_ items: [LocalWeatherForecastItem], timestamp: Date, for key: String, completion: @escaping SaveCompletion)
-    func get(_ items: [LocalWeatherForecastItem], for key: String, completion: @escaping GetCompletion)
+    func get(for key: String, completion: @escaping GetCompletion)
 }
 
 public class LocalSearchForecastRepository: SearchForecastRepository {
     private let store: ForecastStore
+    private let currentDate: () -> Date
     
-    public init(store: ForecastStore) {
+    public init(store: ForecastStore, currentDate: @escaping () -> Date = { Date() }) {
         self.store = store
+        self.currentDate = currentDate
     }
     
     public func save(_ items: [LocalWeatherForecastItem], timestamp: Date, for key: String, completion: @escaping (Error?) -> Void) {
@@ -52,7 +54,22 @@ public class LocalSearchForecastRepository: SearchForecastRepository {
     }
     
     public func searchForecast(_ parameters: SearchParameters, completion: @escaping (SearchForecastResult) -> Void) {
-        
+        store.get(for: parameters.encode(), completion: { result in
+            switch result {
+            case .empty:
+                completion(.success([]))
+            case let .found(items, _):
+                completion(.success(items.toItems()))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        })
+    }
+}
+
+fileprivate extension Array where Element == LocalWeatherForecastItem {
+    func toItems() -> [WeatherForecastItem] {
+        map({ WeatherForecastItem(id: $0.id, date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) })
     }
 }
 
@@ -76,14 +93,68 @@ final class LocalSearchForecastRepositoryTests: XCTestCase {
     
     func test_save_successfully() {
         let (sut, store) = makeSUT()
-        let error = anyNSError()
         
         expectSave(with: sut, by: store, toCompleteWith: nil) {
             store.completeSaveWith(with: nil)
         }
     }
     
+    func test_load_receiveErrorCausedByStoreError() {
+        let (sut, store) = makeSUT()
+        let error = anyNSError()
+        var capturedError: NSError?
+        
+        let exp = expectation(description: "Wait for load completion.")
+        sut.searchForecast(makeSearchParameters(), completion: {
+            if case let .failure(err) = $0 {
+                capturedError = err as NSError?
+            }
+            exp.fulfill()
+        })
+        store.completeGetWith(with: error)
+        
+        wait(for: [exp], timeout: 1.0)
+        XCTAssertEqual(capturedError, error)
+    }
     
+    func test_load_receiveEmptyResult() {
+        let (sut, store) = makeSUT()
+        let date = Date()
+        var capturedItemsCount: Int = -1
+        
+        let exp = expectation(description: "Wait for load completion.")
+        sut.searchForecast(makeSearchParameters(), completion: {
+            if case let .success(arr) = $0 {
+                capturedItemsCount = arr.count
+            }
+            exp.fulfill()
+        })
+        store.completeGetSuccessfullyWith(with: [], timestamp: date)
+        
+        wait(for: [exp], timeout: 1.0)
+        XCTAssertEqual(capturedItemsCount, 0)
+    }
+    
+    func test_load_receiveListResult() {
+        let (sut, store) = makeSUT()
+        let date = Date()
+        var actualItems: [WeatherForecastItem] = []
+        let expectedItems = uniqueForcasts()
+        
+        let exp = expectation(description: "Wait for load completion.")
+        sut.searchForecast(makeSearchParameters(), completion: {
+            if case let .success(arr) = $0 {
+                actualItems = arr
+            }
+            exp.fulfill()
+        })
+        store.completeGetSuccessfullyWith(with: expectedItems, timestamp: date)
+        
+        
+        wait(for: [exp], timeout: 1.0)
+        let convertedActualItems = expectedItems.map({ WeatherForecastItem(id: $0.id, date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) })
+        XCTAssertEqual(convertedActualItems, actualItems)
+    }
     
     // MARK: - Helpers
     
@@ -132,7 +203,7 @@ class ForecastStoreSpy: ForecastStore {
     
     enum Message: Equatable {
         case save(_ items: [LocalWeatherForecastItem], timestamp: Date, key: String)
-        case get(_ items: [LocalWeatherForecastItem], key: String)
+        case get(key: String)
     }
     
     private(set) var receivedMessages: [Message] = []
@@ -160,8 +231,8 @@ class ForecastStoreSpy: ForecastStore {
         saveCompletions.append(completion)
     }
     
-    func get(_ items: [LocalWeatherForecastItem], for key: String, completion: @escaping GetCompletion) {
-        receivedMessages.append(.get(items, key: key))
+    func get(for key: String, completion: @escaping GetCompletion) {
+        receivedMessages.append(.get(key: key))
         getCompletions.append(completion)
     }
 }

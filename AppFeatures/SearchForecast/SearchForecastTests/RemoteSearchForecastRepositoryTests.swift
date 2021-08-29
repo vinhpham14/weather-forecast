@@ -122,16 +122,6 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
         let json = [kRootKey: itemJson]
         return try! JSONSerialization.data(withJSONObject: json)
     }
-    
-    private func makeSearchParameters(cityName: String? = nil, maximumForecastDay: Int? = nil, unit: UnitTemperature? = nil) -> SearchParameters {
-        return (cityName ?? anyCityName, maximumForecastDay ?? anyMaximumForecastDay, unit ?? anyUnit)
-    }
-    
-    private var anyUnit: UnitTemperature { .celsius }
-    private var anyCityName: String { "city" }
-    private var anyURL: URL { URL(string: "https://any-url.com")! }
-    private var anyMaximumForecastDay: Int { 7 }
-    private var anyError: Error { NSError(domain: "error", code: 0, userInfo: nil) }
 }
 
 
