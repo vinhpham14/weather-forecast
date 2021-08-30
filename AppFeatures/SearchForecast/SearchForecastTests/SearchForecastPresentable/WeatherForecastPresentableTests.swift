@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import SearchForecast
 
 
 class WeatherForecastPresentableTests: XCTestCase {

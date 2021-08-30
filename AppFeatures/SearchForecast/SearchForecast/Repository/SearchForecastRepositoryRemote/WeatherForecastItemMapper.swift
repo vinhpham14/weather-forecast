@@ -8,7 +8,7 @@
 import Foundation
 
 
-public final class WeatherForecastItemMapper {
+final class WeatherForecastItemMapper {
     private struct Root: Decodable {
         let items: [RemoteWeatherForecastItem]
     }
