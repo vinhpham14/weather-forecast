@@ -18,3 +18,4 @@ var anyCityName: String { "city" }
 var anyURL: URL { URL(string: "https://any-url.com")! }
 var anyMaximumForecastDay: Int { 7 }
 var anyError: Error { NSError(domain: "error", code: 0, userInfo: nil) }
+var anyNSError: NSError { NSError(domain: "error", code: 0, userInfo: nil) }
