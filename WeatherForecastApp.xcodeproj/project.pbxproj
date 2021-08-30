@@ -199,6 +199,7 @@
 				3DA3EB5426DB99FE006BC9F7 /* Frameworks */,
 				3DA3EB5526DB99FE006BC9F7 /* Resources */,
 				3D63F27D26DC146100BD10BD /* Embed Frameworks */,
+				4FDD9FEBE3D3A8C2457FCAF1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -236,6 +237,7 @@
 				3DA3EB7426DB9A01006BC9F7 /* Sources */,
 				3DA3EB7526DB9A01006BC9F7 /* Frameworks */,
 				3DA3EB7626DB9A01006BC9F7 /* Resources */,
+				2D1FEDD1212D212B6E45B7C6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -337,6 +339,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2D1FEDD1212D212B6E45B7C6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeatherForecastApp-WeatherForecastAppUITests/Pods-WeatherForecastApp-WeatherForecastAppUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeatherForecastApp-WeatherForecastAppUITests/Pods-WeatherForecastApp-WeatherForecastAppUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeatherForecastApp-WeatherForecastAppUITests/Pods-WeatherForecastApp-WeatherForecastAppUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4FDD9FEBE3D3A8C2457FCAF1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeatherForecastApp/Pods-WeatherForecastApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WeatherForecastApp/Pods-WeatherForecastApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WeatherForecastApp/Pods-WeatherForecastApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		97DBFAA43FB6672599D17771 /* [CP] Check Pods Manifest.lock */ = {
