@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D080C3526DCE873002859CC /* SearchForecastUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D080C3426DCE873002859CC /* SearchForecastUseCaseTests.swift */; };
 		3D080C3726DCFA5D002859CC /* SearchForecastUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D080C3626DCFA5D002859CC /* SearchForecastUseCase.swift */; };
+		3D080C3B26DCFBC2002859CC /* DefaultSearchForecastUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D080C3A26DCFBC2002859CC /* DefaultSearchForecastUseCase.swift */; };
 		3D63F24226DB9A7700BD10BD /* SearchForecast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D63F23826DB9A7700BD10BD /* SearchForecast.framework */; };
 		3D63F24926DB9A7700BD10BD /* SearchForecast.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D63F23B26DB9A7700BD10BD /* SearchForecast.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3D63F25326DBB59B00BD10BD /* WeatherForecastItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D63F25226DBB59B00BD10BD /* WeatherForecastItem.swift */; };
@@ -44,6 +45,7 @@
 		1003992AF99954F03F790521 /* Pods-SearchForecastTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SearchForecastTests.debug.xcconfig"; path = "Target Support Files/Pods-SearchForecastTests/Pods-SearchForecastTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3D080C3426DCE873002859CC /* SearchForecastUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForecastUseCaseTests.swift; sourceTree = "<group>"; };
 		3D080C3626DCFA5D002859CC /* SearchForecastUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForecastUseCase.swift; sourceTree = "<group>"; };
+		3D080C3A26DCFBC2002859CC /* DefaultSearchForecastUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSearchForecastUseCase.swift; sourceTree = "<group>"; };
 		3D63F23826DB9A7700BD10BD /* SearchForecast.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SearchForecast.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D63F23B26DB9A7700BD10BD /* SearchForecast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchForecast.h; sourceTree = "<group>"; };
 		3D63F23C26DB9A7700BD10BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -109,6 +111,24 @@
 			path = SearchForecastUseCase;
 			sourceTree = "<group>";
 		};
+		3D080C3826DCFAC8002859CC /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				3D080C3926DCFB92002859CC /* SearchForecastRepository */,
+				3D63F26526DBD9D900BD10BD /* SearchForecastRepositoryRemote */,
+				3D63F26926DBE9A200BD10BD /* SearchForecastRepositoryLocal */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		3D080C3926DCFB92002859CC /* SearchForecastRepository */ = {
+			isa = PBXGroup;
+			children = (
+				3D63F26726DBE65C00BD10BD /* SearchForecastRepository.swift */,
+			);
+			path = SearchForecastRepository;
+			sourceTree = "<group>";
+		};
 		3D63F22E26DB9A7700BD10BD = {
 			isa = PBXGroup;
 			children = (
@@ -136,8 +156,7 @@
 				3D63F23C26DB9A7700BD10BD /* Info.plist */,
 				3D63F26326DBD9BE00BD10BD /* APIClient */,
 				3D63F26426DBD9C400BD10BD /* SearchForecast */,
-				3D63F26526DBD9D900BD10BD /* SearchForecastRemote */,
-				3D63F26926DBE9A200BD10BD /* SearchForecastLocal */,
+				3D080C3826DCFAC8002859CC /* Repository */,
 			);
 			path = SearchForecast;
 			sourceTree = "<group>";
@@ -166,23 +185,23 @@
 			isa = PBXGroup;
 			children = (
 				3D63F25226DBB59B00BD10BD /* WeatherForecastItem.swift */,
-				3D63F26726DBE65C00BD10BD /* SearchForecastRepository.swift */,
 				3D080C3626DCFA5D002859CC /* SearchForecastUseCase.swift */,
+				3D080C3A26DCFBC2002859CC /* DefaultSearchForecastUseCase.swift */,
 			);
 			path = SearchForecast;
 			sourceTree = "<group>";
 		};
-		3D63F26526DBD9D900BD10BD /* SearchForecastRemote */ = {
+		3D63F26526DBD9D900BD10BD /* SearchForecastRepositoryRemote */ = {
 			isa = PBXGroup;
 			children = (
 				3D63F25D26DBD93C00BD10BD /* RemoteSearchForecastRepository.swift */,
 				3D63F26126DBD97C00BD10BD /* RemoteWeatherForecastItem.swift */,
 				3D63F25F26DBD96900BD10BD /* WeatherForecastItemMapper.swift */,
 			);
-			path = SearchForecastRemote;
+			path = SearchForecastRepositoryRemote;
 			sourceTree = "<group>";
 		};
-		3D63F26926DBE9A200BD10BD /* SearchForecastLocal */ = {
+		3D63F26926DBE9A200BD10BD /* SearchForecastRepositoryLocal */ = {
 			isa = PBXGroup;
 			children = (
 				3D63F27426DC0E3600BD10BD /* ForecastStore.swift */,
@@ -190,7 +209,7 @@
 				3D63F27226DC0E1800BD10BD /* LocalWeatherForecastItem.swift */,
 				3D63F27626DC0E5900BD10BD /* LocalSearchForecastRepository.swift */,
 			);
-			path = SearchForecastLocal;
+			path = SearchForecastRepositoryLocal;
 			sourceTree = "<group>";
 		};
 		3D63F27026DC0DCC00BD10BD /* Helpers */ = {
@@ -392,6 +411,7 @@
 				3D080C3726DCFA5D002859CC /* SearchForecastUseCase.swift in Sources */,
 				3D63F25326DBB59B00BD10BD /* WeatherForecastItem.swift in Sources */,
 				3D63F25C26DBD90A00BD10BD /* APIClient.swift in Sources */,
+				3D080C3B26DCFBC2002859CC /* DefaultSearchForecastUseCase.swift in Sources */,
 				3D63F26226DBD97C00BD10BD /* RemoteWeatherForecastItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
