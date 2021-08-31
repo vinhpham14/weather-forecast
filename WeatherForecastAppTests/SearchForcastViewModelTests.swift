@@ -132,7 +132,10 @@ class SearchForecastViewModelTests: XCTestCase {
     
     private func makeSUT(searchKeywordCountThreshold: Int = 3) -> (sut: SearchForecastViewModel, useCase: MockSearchForecastUseCase) {
         let useCase = MockSearchForecastUseCase()
-        let sut = SearchForecastViewModel(searchKeywordCountThreshold: searchKeywordCountThreshold, searchForecastUseCase: useCase)
+        let sut = SearchForecastViewModel(
+            searchKeywordCountThreshold: searchKeywordCountThreshold,
+            temperatureUnit: .celsius,
+            searchForecastUseCase: useCase)
         return (sut, useCase)
     }
     

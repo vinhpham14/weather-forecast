@@ -26,8 +26,7 @@ public final class RemoteSearchForecastRepository: SearchForecastRepository {
         let url = endpoint.search(
             keyword: parameters.cityName,
             maximumForcastDay: parameters.maximumForecastDay,
-            unit: parameters.unit.description
-        
+            unit: parameters.unit
         )
         let _ = apiClient.get(from: url, completion: { [weak self] result in
             guard self != nil else { return }

@@ -33,11 +33,13 @@ public final class WeatherForecastPresentableMapper {
         dateFormatter: DateFormatter = DefaultWeatherForecastDateFormatter()
     ) -> WeatherForecastPresentable {
         
-        WeatherForecastPresentable(
+        let measurement = Measurement(value: item.temperature, unit: unit)
+        let formatter = MeasurementFormatter()
+        return WeatherForecastPresentable(
             date: dateFormatter.string(from: item.date),
             pressure: "\(Int(item.pressure))",
             humidity: "\(Int(item.humidity))",
-            temperature: "\(Int(item.temperature))",
+            temperature: formatter.string(from: measurement),
             description: item.description
         )
     }

@@ -24,10 +24,10 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
         let url = anyURL
         let (sut, api) = makeSUT(baseURL: url)
         let params = makeSearchParameters()
-        let searchURL = ForecastEndpoint(baseURL: url).search(
+        let searchURL = ForecastEndpoint(baseURL: url, appID: "any appid").search(
             keyword: params.cityName,
             maximumForcastDay: params.maximumForecastDay,
-            unit: params.unit.description
+            unit: params.unit
         )
         
         sut.searchForecast(params) { _ in }
@@ -77,7 +77,7 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
     
     private func makeSUT(baseURL: URL? = nil) -> (sut: RemoteSearchForecastRepository, api: APIClientSpy) {
         let api = APIClientSpy()
-        let sut = RemoteSearchForecastRepository(endpoint: ForecastEndpoint(baseURL: anyURL), apiClient: api)
+        let sut = RemoteSearchForecastRepository(endpoint: ForecastEndpoint(baseURL: anyURL, appID: "any appid"), apiClient: api)
         return (sut, api)
     }
     
@@ -135,9 +135,10 @@ class APIClientSpy: SearchForecastAPIClient {
     var requestedURLs: [URL] = []
     var completions: [APICompletion] = []
     
-    func get(from url: URL, completion: @escaping APICompletion) {
+    func get(from url: URL, completion: @escaping APICompletion) -> Cancellable {
         requestedURLs.append(url)
         completions.append(completion)
+        return { }
     }
     
     func completeWith(error: Error, at index: Int = 0) {

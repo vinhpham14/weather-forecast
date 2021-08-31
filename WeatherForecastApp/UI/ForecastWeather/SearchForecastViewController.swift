@@ -41,6 +41,7 @@ class SearchForecastViewController: UIViewController {
     private var showMessage: Binder<String?> {
         return Binder(self, binding: { (vc, msg) in
             let alert = UIAlertController(title: nil, message: msg, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             vc.present(alert, animated: true)
         })
     }

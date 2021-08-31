@@ -8,6 +8,9 @@
 import UIKit
 import SearchForecast
 
+private let baseURL = "https://api.openweathermap.org"
+private let appID = "17f883ef3221481d77e9389a5ce28b7b"
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -24,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func makeRootViewController() -> UIViewController {
         let useCase = makeLocalAndFallbackWithRemoteSearchForecastUseCase(
             apiClient: URLSessionSearchForecastAPIClient(session: URLSession.shared),
-            entryPoint: ForecastEndpoint(baseURL: URL(string: "https://")!),
+            entryPoint: ForecastEndpoint(baseURL: URL(string: baseURL)!, appID: appID),
             store: InMemoryForecastStore()
         )
         return makeSearchForecastViewController(
@@ -45,6 +48,7 @@ fileprivate func makeSearchForecastViewController(
     
     let viewModel = SearchForecastViewModel(
         searchKeywordCountThreshold: searchKeywordCountThreshold,
+        temperatureUnit: .celsius,
         searchForecastUseCase: searchForecastUseCase
     )
     

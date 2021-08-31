@@ -23,12 +23,16 @@ class SearchForecastViewModel: ViewModelType {
         let loading: Driver<Bool>
     }
     
+    private let temperatureUnit: UnitTemperature
     private let searchKeywordCountThreshold: Int
     private let searchForecastUseCase: SearchForecastUseCase
     
-    init(searchKeywordCountThreshold: Int, searchForecastUseCase: SearchForecastUseCase) {
+    init(searchKeywordCountThreshold: Int,
+         temperatureUnit: UnitTemperature,
+         searchForecastUseCase: SearchForecastUseCase) {
         self.searchKeywordCountThreshold = searchKeywordCountThreshold
         self.searchForecastUseCase = searchForecastUseCase
+        self.temperatureUnit = temperatureUnit
     }
     
     func transfrom(_ input: Input) -> Output {
@@ -46,9 +50,9 @@ class SearchForecastViewModel: ViewModelType {
                     .trackActivity(activityIndicator)
                     .asDriver { _ in Driver.empty() }
             }
-            .map {
+            .map { [temperatureUnit] in
                 $0
-                    .map { WeatherForecastPresentableMapper.map(item: $0) }
+                    .map { WeatherForecastPresentableMapper.map(item: $0, unit: temperatureUnit) }
                     .map({ WeatherForecastViewModel($0) })
             }
         
