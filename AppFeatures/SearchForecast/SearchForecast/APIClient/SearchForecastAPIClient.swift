@@ -8,7 +8,7 @@
 import Foundation
 
 
-public protocol APIClient {
+public protocol SearchForecastAPIClient {
     typealias APIResult = Swift.Result<(Data, HTTPURLResponse), Error>
     typealias APICompletion = (APIResult) -> Void
     

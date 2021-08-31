@@ -10,14 +10,14 @@ import Foundation
 
 public final class RemoteSearchForecastRepository: SearchForecastRepository {
     private let endpoint: ForecastEndpoint
-    private let apiClient: APIClient
+    private let apiClient: SearchForecastAPIClient
     
     public enum Error: Swift.Error {
         case invalidJSON
         case unexpected
     }
     
-    public init(endpoint: ForecastEndpoint, apiClient: APIClient) {
+    public init(endpoint: ForecastEndpoint, apiClient: SearchForecastAPIClient) {
         self.endpoint = endpoint
         self.apiClient = apiClient
     }

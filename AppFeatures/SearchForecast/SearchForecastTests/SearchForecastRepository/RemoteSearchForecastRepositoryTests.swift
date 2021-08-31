@@ -131,7 +131,7 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
 }
 
 
-class APIClientSpy: APIClient {
+class APIClientSpy: SearchForecastAPIClient {
     var requestedURLs: [URL] = []
     var completions: [APICompletion] = []
     
