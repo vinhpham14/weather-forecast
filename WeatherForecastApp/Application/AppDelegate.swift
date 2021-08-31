@@ -16,9 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = UIStoryboard(name: "SearchForecast", bundle: nil).instantiateInitialViewController()
+        window?.rootViewController = makeRootViewController()
         window?.makeKeyAndVisible()
         return true
+    }
+    
+    func makeRootViewController() -> UIViewController {
+        let useCase = makeLocalAndFallbackWithRemoteSearchForecastUseCase(
+            apiClient: URLSessionSearchForecastAPIClient(session: URLSession.shared),
+            entryPoint: ForecastEndpoint(baseURL: URL(string: "https://")!),
+            store: InMemoryForecastStore()
+        )
+        return makeSearchForecastViewController(
+            searchKeywordCountThreshold: 3,
+            searchForecastUseCase: useCase
+        )
     }
 
 }

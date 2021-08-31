@@ -10,6 +10,7 @@ target 'WeatherForecastApp' do
   # Pods for WeatherForecastApp
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'RxDataSources'
 
   target 'WeatherForecastAppTests' do
     inherit! :search_paths
