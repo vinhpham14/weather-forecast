@@ -29,7 +29,7 @@ public final class RemoteSearchForecastRepository: SearchForecastRepository {
             unit: parameters.unit.description
         
         )
-        apiClient.get(from: url, completion: { [weak self] result in
+        let _ = apiClient.get(from: url, completion: { [weak self] result in
             guard self != nil else { return }
             
             switch result {

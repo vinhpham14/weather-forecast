@@ -8,9 +8,15 @@
 import Foundation
 
 
+//public protocol Cancellable {
+//    func cancel()
+//}
+
 public protocol SearchForecastAPIClient {
     typealias APIResult = Swift.Result<(Data, HTTPURLResponse), Error>
     typealias APICompletion = (APIResult) -> Void
+    typealias Cancellable = () -> Void
     
-    func get(from url: URL, completion: @escaping APICompletion)
+    @discardableResult
+    func get(from url: URL, completion: @escaping APICompletion) -> Cancellable
 }
