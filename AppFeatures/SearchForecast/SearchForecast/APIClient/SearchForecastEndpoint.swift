@@ -22,7 +22,7 @@ public struct ForecastEndpoint {
         var components = URLComponents()
         components.scheme = baseURL.scheme
         components.host = baseURL.host
-        components.path = baseURL.path + "/data/2.5/forecast/daily"
+        components.path = baseURL.path + "/data/2.5/forecast"
         components.queryItems = [
             URLQueryItem(name: "q", value: keyword),
             URLQueryItem(name: "cnt", value: "\(maximumForcastDay)"),

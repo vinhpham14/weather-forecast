@@ -9,16 +9,14 @@ import Foundation
 
 
 public final class DefaultWeatherForecastDateFormatter: DateFormatter {
-    private static let defaultFormat = "E, dd MMM yyy"
-    private let format: String
+    private let defaultFormat = "E, dd MMM yyy"
     
-    public init(format: String? = nil) {
-        self.format = format ?? Self.defaultFormat
+    public override init() {
         super.init()
+        self.dateFormat = defaultFormat
     }
     
     required init?(coder: NSCoder) {
-        self.format = Self.defaultFormat
         super.init(coder: coder)
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 
 final class WeatherForecastItemMapper {
     private struct Root: Decodable {
-        let items: [RemoteWeatherForecastItem]
+        let list: [RemoteWeatherForecastItem]
     }
     
     static func map(_ data: Data, from response: HTTPURLResponse) throws -> [RemoteWeatherForecastItem] {
@@ -20,6 +20,6 @@ final class WeatherForecastItemMapper {
             let root = try? decoder.decode(Root.self, from: data) else {
             throw RemoteSearchForecastRepository.Error.invalidJSON
         }
-        return root.items
+        return root.list
     }
 }

@@ -25,7 +25,9 @@ class SearchForecastViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let input = SearchForecastViewModel.Input(searchTextChanged: searchBar.rx.text.asDriver())
+        let input = SearchForecastViewModel.Input(
+            searchTextChanged: searchBar.rx.text.asDriver().throttle(.milliseconds(250)))
+        
         let output = viewModel.transfrom(input)
         
         disposeBag.insert([
