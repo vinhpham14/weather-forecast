@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '14.5'
 
 workspace 'WeatherForecastApp.xcworkspace'
 
@@ -13,10 +13,6 @@ target 'WeatherForecastApp' do
 
   target 'WeatherForecastAppTests' do
     inherit! :search_paths
-    # Pods for testing
-  end
-
-  target 'WeatherForecastAppUITests' do
     # Pods for testing
   end
 
