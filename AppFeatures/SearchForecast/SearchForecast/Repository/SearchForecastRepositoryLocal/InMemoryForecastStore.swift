@@ -22,7 +22,7 @@ public class InMemoryForecastStore: ForecastStore {
     
     private let caches: NSCache<NSString, Cache>
     
-    public init(caches: NSCache<NSString, Cache>) {
+    public init(caches: NSCache<NSString, Cache> = .init()) {
         self.caches = caches
     }
     

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SearchForecast
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,4 +21,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+}
+
+
+// MARK: - factory functions
+
+fileprivate func makeSearchForecastViewController(
+    searchKeywordCountThreshold: Int,
+    searchForecastUseCase: SearchForecastUseCase
+) -> SearchForecastViewController {
+    
+    let viewModel = SearchForecastViewModel(
+        searchKeywordCountThreshold: searchKeywordCountThreshold,
+        searchForecastUseCase: searchForecastUseCase
+    )
+    
+    let vc = UIStoryboard(name: "SearchForecast", bundle: nil)
+        .instantiateInitialViewController() as! SearchForecastViewController
+    
+    vc.viewModel = viewModel
+    
+    return vc
+}
+
+fileprivate func makeLocalAndFallbackWithRemoteSearchForecastUseCase(
+    apiClient: SearchForecastAPIClient,
+    entryPoint: ForecastEndpoint,
+    store: ForecastStore
+) -> SearchForecastUseCase {
+    
+    let repo = CacheWithFallbackRemoteSearchForecastRepository(
+        cacheStore: store,
+        remoteRepository: RemoteSearchForecastRepository(
+            endpoint: entryPoint,
+            apiClient: apiClient
+        )
+    )
+    
+    return DefaultSearchForecastUseCase(searchRepository: repo)
 }

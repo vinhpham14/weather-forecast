@@ -25,6 +25,8 @@
 		3DF6184626DE8EDB00F6FC0A /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6184526DE8EDB00F6FC0A /* ViewModelType.swift */; };
 		3DF6184926DE8F3F00F6FC0A /* WeatherForecastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6184826DE8F3F00F6FC0A /* WeatherForecastViewModel.swift */; };
 		3DF6184B26DE928C00F6FC0A /* SearchForecastAPIClient+URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6184A26DE928C00F6FC0A /* SearchForecastAPIClient+URLSession.swift */; };
+		3DF6185226DE999200F6FC0A /* Observable+Fallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6185126DE999200F6FC0A /* Observable+Fallback.swift */; };
+		3DF6185426DE9A9400F6FC0A /* SearchForecastRepository+WithCacheAndFallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6185326DE9A9400F6FC0A /* SearchForecastRepository+WithCacheAndFallback.swift */; };
 		573D153E3A8220865015EE4B /* Pods_WeatherForecastAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A43E0E1DE471A920EA48DA /* Pods_WeatherForecastAppTests.framework */; };
 		C129069C9360E19228B8385E /* Pods_WeatherForecastApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED84D299615B124F93AF4850 /* Pods_WeatherForecastApp.framework */; };
 /* End PBXBuildFile section */
@@ -76,6 +78,8 @@
 		3DF6184526DE8EDB00F6FC0A /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		3DF6184826DE8F3F00F6FC0A /* WeatherForecastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastViewModel.swift; sourceTree = "<group>"; };
 		3DF6184A26DE928C00F6FC0A /* SearchForecastAPIClient+URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchForecastAPIClient+URLSession.swift"; sourceTree = "<group>"; };
+		3DF6185126DE999200F6FC0A /* Observable+Fallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Fallback.swift"; sourceTree = "<group>"; };
+		3DF6185326DE9A9400F6FC0A /* SearchForecastRepository+WithCacheAndFallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchForecastRepository+WithCacheAndFallback.swift"; sourceTree = "<group>"; };
 		46CF9CE98D6B2774D55C3FC5 /* Pods-WeatherForecastAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherForecastAppTests.release.xcconfig"; path = "Target Support Files/Pods-WeatherForecastAppTests/Pods-WeatherForecastAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		73E00E972B44E7152E58AB2C /* Pods-WeatherForecastAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherForecastAppTests.debug.xcconfig"; path = "Target Support Files/Pods-WeatherForecastAppTests/Pods-WeatherForecastAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		84A43E0E1DE471A920EA48DA /* Pods_WeatherForecastAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherForecastAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -220,6 +224,7 @@
 			children = (
 				3DF6183526DE85A800F6FC0A /* Reactive+ErrorTracker.swift */,
 				3DF6183D26DE8ACC00F6FC0A /* Reactive+ActivityIndicator.swift */,
+				3DF6185126DE999200F6FC0A /* Observable+Fallback.swift */,
 			);
 			path = Reactive;
 			sourceTree = "<group>";
@@ -229,6 +234,7 @@
 			children = (
 				3DF6183726DE88C900F6FC0A /* SearchForecastUseCase+Observable.swift */,
 				3DF6184A26DE928C00F6FC0A /* SearchForecastAPIClient+URLSession.swift */,
+				3DF6185326DE9A9400F6FC0A /* SearchForecastRepository+WithCacheAndFallback.swift */,
 			);
 			path = SearchForecast;
 			sourceTree = "<group>";
@@ -425,9 +431,11 @@
 				3DF6184B26DE928C00F6FC0A /* SearchForecastAPIClient+URLSession.swift in Sources */,
 				3D925F0B26DE7390006F6E2B /* SearchForecastViewModel.swift in Sources */,
 				3DF6183626DE85A800F6FC0A /* Reactive+ErrorTracker.swift in Sources */,
+				3DF6185426DE9A9400F6FC0A /* SearchForecastRepository+WithCacheAndFallback.swift in Sources */,
 				3DF6183826DE88C900F6FC0A /* SearchForecastUseCase+Observable.swift in Sources */,
 				3DF6184426DE8EC000F6FC0A /* SearchForecastViewController.swift in Sources */,
 				3DF6184626DE8EDB00F6FC0A /* ViewModelType.swift in Sources */,
+				3DF6185226DE999200F6FC0A /* Observable+Fallback.swift in Sources */,
 				3DA3EB5F26DB99FE006BC9F7 /* ViewController.swift in Sources */,
 				3DF6183E26DE8ACC00F6FC0A /* Reactive+ActivityIndicator.swift in Sources */,
 				3DA3EB5B26DB99FE006BC9F7 /* AppDelegate.swift in Sources */,
