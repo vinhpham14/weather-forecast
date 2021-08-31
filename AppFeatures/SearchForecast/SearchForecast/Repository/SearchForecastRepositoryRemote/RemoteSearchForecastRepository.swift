@@ -54,6 +54,6 @@ public final class RemoteSearchForecastRepository: SearchForecastRepository {
 
 private extension Array where Element == RemoteWeatherForecastItem {
     func toDomainItems() -> [WeatherForecastItem] {
-        return map { WeatherForecastItem(id: $0.id, date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) }
+        return map { WeatherForecastItem(date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) }
     }
 }

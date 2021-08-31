@@ -9,15 +9,13 @@ import Foundation
 
 
 public struct LocalWeatherForecastItem {
-    public let id: UUID
     public let date: Date
     public let pressure: Double
     public let humidity: Double
     public let temperature: Double
     public let description: String
     
-    public init( id: UUID, date: Date, pressure: Double, humidity: Double, temperature: Double, description: String) {
-        self.id = id
+    public init(date: Date, pressure: Double, humidity: Double, temperature: Double, description: String) {
         self.date = date
         self.pressure = pressure
         self.humidity = humidity
@@ -28,6 +26,10 @@ public struct LocalWeatherForecastItem {
 
 extension LocalWeatherForecastItem: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.id == rhs.id
+        lhs.date == rhs.date
+        && lhs.pressure == rhs.pressure
+        && lhs.humidity == rhs.humidity
+        && lhs.temperature == rhs.temperature
+        && lhs.description == rhs.description
     }
 }

@@ -39,8 +39,8 @@ class SearchForecastViewModel: ViewModelType {
         
         let errorTracker = ErrorTracker()
         let activityIndicator = ActivityIndicator()
-        
-        let items = input.searchTextChanged
+        let textChanged = input.searchTextChanged.skip(1)
+        let items = textChanged
             .map({ $0 ?? "" })
             .filter({ [searchKeywordCountThreshold] in $0.count >= searchKeywordCountThreshold })
             .flatMapLatest { [searchForecastUseCase] in
@@ -66,7 +66,7 @@ class SearchForecastViewModel: ViewModelType {
         
         let emptyOnError = error.map({ _ -> [WeatherForecastViewModel] in [] })
         
-        let emptyOnKeywordChanged = input.searchTextChanged
+        let emptyOnKeywordChanged = textChanged
             .filter({ ($0 ?? "").isEmpty })
             .map({ _ -> [WeatherForecastViewModel] in [] })
         

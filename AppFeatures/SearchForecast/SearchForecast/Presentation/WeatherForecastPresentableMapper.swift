@@ -27,7 +27,7 @@ public final class WeatherForecastPresentableMapper {
     
     public static func map(
         item: WeatherForecastItem,
-        unit: UnitTemperature = .celsius,
+        unit: UnitTemperature,
         dateFormatter: DateFormatter = DefaultWeatherForecastDateFormatter()
     ) -> WeatherForecastPresentable {
         

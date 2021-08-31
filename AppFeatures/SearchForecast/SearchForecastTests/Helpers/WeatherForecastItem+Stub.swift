@@ -13,7 +13,6 @@ extension WeatherForecastItem {
     static func random() -> WeatherForecastItem {
         let date = Int(Date().timeIntervalSince1970)
         return WeatherForecastItem(
-            id: UUID(),
             date: Date.init(timeIntervalSince1970: Double(Int.random(in: (date - 1000)...date))),
             pressure: Double.random(in: 0...100),
             humidity: Double.random(in: 0...100),

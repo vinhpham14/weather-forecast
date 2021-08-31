@@ -42,6 +42,6 @@ extension LocalSearchForecastRepository: SearchForecastRepository {
 
 fileprivate extension Array where Element == LocalWeatherForecastItem {
     func toItems() -> [WeatherForecastItem] {
-        map({ WeatherForecastItem(id: $0.id, date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) })
+        map({ WeatherForecastItem(date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) })
     }
 }

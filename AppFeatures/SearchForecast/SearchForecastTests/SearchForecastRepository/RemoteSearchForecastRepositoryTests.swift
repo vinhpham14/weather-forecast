@@ -12,7 +12,7 @@ import SearchForecast
 
 final class RemoteSearchForecastRepositoryTests: XCTestCase {
     
-    private let kRootKey = "items"
+    private let kRootKey = "list"
     
     func test_init_noRequestHappens() {
         let (_, api) = makeSUT()
@@ -111,14 +111,16 @@ final class RemoteSearchForecastRepositoryTests: XCTestCase {
     
     private func makeRandomItem() -> (model: WeatherForecastItem, json: [String: Any]) {
         let model = WeatherForecastItem.random()
-        let dateFormatter = ISO8601DateFormatter()
         let json: [String: Any] = [
-            "id": model.id.uuidString,
-            "date": dateFormatter.string(from: model.date),
-            "pressure": model.pressure,
-            "humidity": model.humidity,
-            "temperature": model.temperature,
-            "description": model.description,
+            "main": [
+                "pressure": model.pressure,
+                "humidity": model.humidity,
+                "temp": model.temperature,
+            ],
+            "weather": [
+                ["description": model.description]
+            ],
+            "dt": model.date.timeIntervalSince1970,
         ]
         return (model, json)
     }

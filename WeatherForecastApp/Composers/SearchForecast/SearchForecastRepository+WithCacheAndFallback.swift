@@ -56,7 +56,6 @@ class CacheWithFallbackRemoteSearchForecastRepository: SearchForecastRepository 
 private extension WeatherForecastItem {
     func toLocal() -> LocalWeatherForecastItem {
         return LocalWeatherForecastItem(
-            id: id,
             date: date,
             pressure: pressure,
             humidity: humidity,

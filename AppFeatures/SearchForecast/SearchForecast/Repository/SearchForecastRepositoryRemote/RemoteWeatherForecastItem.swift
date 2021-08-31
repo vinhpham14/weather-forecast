@@ -9,7 +9,6 @@ import Foundation
 
 
 struct RemoteWeatherForecastItem {
-    public let id: UUID
     public let date: Date
     public let pressure: Double
     public let humidity: Double
@@ -51,7 +50,6 @@ extension RemoteWeatherForecastItem: Decodable {
             throw UnexpectedError()
         }
         
-        self.id = UUID()
         let timeInterval = try container.decode(Double.self, forKey: .date)
         self.date = Date(timeIntervalSince1970: timeInterval)
         self.pressure = main.pressure

@@ -87,7 +87,7 @@ final class LocalSearchForecastRepositoryTests: XCTestCase {
         
         
         wait(for: [exp], timeout: 1.0)
-        let convertedActualItems = expectedItems.map({ WeatherForecastItem(id: $0.id, date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) })
+        let convertedActualItems = expectedItems.map({ WeatherForecastItem(date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) })
         XCTAssertEqual(convertedActualItems, actualItems)
     }
     
@@ -101,7 +101,7 @@ final class LocalSearchForecastRepositoryTests: XCTestCase {
     
     private func uniqueForcasts() -> [LocalWeatherForecastItem] {
         let items: [WeatherForecastItem] = [.random(), .random()]
-        let localItems = items.map({ LocalWeatherForecastItem(id: $0.id, date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) })
+        let localItems = items.map({ LocalWeatherForecastItem(date: $0.date, pressure: $0.pressure, humidity: $0.humidity, temperature: $0.temperature, description: $0.description) })
         return localItems
     }
     
