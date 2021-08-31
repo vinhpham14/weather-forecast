@@ -11,29 +11,6 @@ import RxSwift
 import RxCocoa
 
 
-struct WeatherForecastViewModel: Equatable {
-    private let presentableItem: WeatherForecastPresentable
-    
-    init(_ item: WeatherForecastPresentable) {
-        self.presentableItem = item
-    }
-    
-    static func == (lhs: WeatherForecastViewModel, rhs: WeatherForecastViewModel) -> Bool {
-        lhs.presentableItem.date == rhs.presentableItem.date
-        && lhs.presentableItem.pressure == rhs.presentableItem.pressure
-        && lhs.presentableItem.humidity == rhs.presentableItem.humidity
-        && lhs.presentableItem.temperature == rhs.presentableItem.temperature
-        && lhs.presentableItem.description == rhs.presentableItem.description
-    }
-}
-
-protocol ViewModelType {
-    associatedtype Input
-    associatedtype Output
-    
-    func transfrom(_ input: Input) -> Output
-}
-
 class SearchForecastViewModel: ViewModelType {
     
     struct Input {
