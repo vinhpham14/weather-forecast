@@ -19,6 +19,7 @@
 		3DA3EB6726DB9A00006BC9F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DA3EB6526DB9A00006BC9F7 /* LaunchScreen.storyboard */; };
 		3DF6183626DE85A800F6FC0A /* Reactive+ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6183526DE85A800F6FC0A /* Reactive+ErrorTracker.swift */; };
 		3DF6183826DE88C900F6FC0A /* SearchForecastUseCase+Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6183726DE88C900F6FC0A /* SearchForecastUseCase+Observable.swift */; };
+		3DF6183E26DE8ACC00F6FC0A /* Reactive+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6183D26DE8ACC00F6FC0A /* Reactive+ActivityIndicator.swift */; };
 		573D153E3A8220865015EE4B /* Pods_WeatherForecastAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A43E0E1DE471A920EA48DA /* Pods_WeatherForecastAppTests.framework */; };
 		C129069C9360E19228B8385E /* Pods_WeatherForecastApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED84D299615B124F93AF4850 /* Pods_WeatherForecastApp.framework */; };
 /* End PBXBuildFile section */
@@ -64,6 +65,7 @@
 		3DA3EB7326DB9A01006BC9F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3DF6183526DE85A800F6FC0A /* Reactive+ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reactive+ErrorTracker.swift"; sourceTree = "<group>"; };
 		3DF6183726DE88C900F6FC0A /* SearchForecastUseCase+Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchForecastUseCase+Observable.swift"; sourceTree = "<group>"; };
+		3DF6183D26DE8ACC00F6FC0A /* Reactive+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reactive+ActivityIndicator.swift"; sourceTree = "<group>"; };
 		46CF9CE98D6B2774D55C3FC5 /* Pods-WeatherForecastAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherForecastAppTests.release.xcconfig"; path = "Target Support Files/Pods-WeatherForecastAppTests/Pods-WeatherForecastAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		73E00E972B44E7152E58AB2C /* Pods-WeatherForecastAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherForecastAppTests.debug.xcconfig"; path = "Target Support Files/Pods-WeatherForecastAppTests/Pods-WeatherForecastAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		84A43E0E1DE471A920EA48DA /* Pods_WeatherForecastAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherForecastAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,7 +164,7 @@
 		3DF6183426DE859D00F6FC0A /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				3DF6183526DE85A800F6FC0A /* Reactive+ErrorTracker.swift */,
+				3DF6183F26DE8B7900F6FC0A /* Reactive */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -194,9 +196,18 @@
 		3DF6183C26DE8A5500F6FC0A /* Adapters */ = {
 			isa = PBXGroup;
 			children = (
-				3DF6183726DE88C900F6FC0A /* SearchForecastUseCase+Observable.swift */,
 			);
 			path = Adapters;
+			sourceTree = "<group>";
+		};
+		3DF6183F26DE8B7900F6FC0A /* Reactive */ = {
+			isa = PBXGroup;
+			children = (
+				3DF6183726DE88C900F6FC0A /* SearchForecastUseCase+Observable.swift */,
+				3DF6183526DE85A800F6FC0A /* Reactive+ErrorTracker.swift */,
+				3DF6183D26DE8ACC00F6FC0A /* Reactive+ActivityIndicator.swift */,
+			);
+			path = Reactive;
 			sourceTree = "<group>";
 		};
 		681A28377B30228CFBA498F0 /* Frameworks */ = {
@@ -390,6 +401,7 @@
 				3DF6183626DE85A800F6FC0A /* Reactive+ErrorTracker.swift in Sources */,
 				3DF6183826DE88C900F6FC0A /* SearchForecastUseCase+Observable.swift in Sources */,
 				3DA3EB5F26DB99FE006BC9F7 /* ViewController.swift in Sources */,
+				3DF6183E26DE8ACC00F6FC0A /* Reactive+ActivityIndicator.swift in Sources */,
 				3DA3EB5B26DB99FE006BC9F7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
