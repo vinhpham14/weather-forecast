@@ -20,6 +20,8 @@ public class InMemoryForecastStore: ForecastStore {
         }
     }
     
+    private struct NotFound: Error { }
+    
     private let caches: NSCache<NSString, Cache>
     
     public init(caches: NSCache<NSString, Cache> = .init()) {
@@ -35,7 +37,7 @@ public class InMemoryForecastStore: ForecastStore {
         if let cache = caches.object(forKey: key as NSString) {
             completion(.found(items: cache.items, timestamp: cache.timestamp))
         } else {
-            completion(.empty)
+            completion(.failure(NotFound()))
         }
     }
 }

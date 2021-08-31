@@ -64,8 +64,20 @@ class SearchForecastViewModel: ViewModelType {
         .map({ Optional.some($0) })
         .asDriver()
         
-        let loading = activityIndicator.asDriver()
+        let emptyOnError = error.map({ _ -> [WeatherForecastViewModel] in [] })
         
-        return Output(weatherForecastItems: items, popupErrorMessage: error, loading: loading)
+        let emptyOnKeywordChanged = input.searchTextChanged
+            .filter({ ($0 ?? "").isEmpty })
+            .map({ _ -> [WeatherForecastViewModel] in [] })
+        
+        let resultItems = Observable.of(items, emptyOnError, emptyOnKeywordChanged)
+            .merge()
+            .asDriver(onErrorJustReturn: [])
+        
+        return Output(
+            weatherForecastItems: resultItems,
+            popupErrorMessage: error,
+            loading: activityIndicator.asDriver()
+        )
     }
 }
