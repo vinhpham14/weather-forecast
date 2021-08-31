@@ -43,6 +43,7 @@ class SearchForecastViewModel: ViewModelType {
     struct Output {
         let weatherForecastItems: Driver<[WeatherForecastViewModel]>
         let popupErrorMessage: Driver<String?>
+        let loading: Driver<Bool>
     }
     
     private let searchKeywordCountThreshold: Int
@@ -56,6 +57,7 @@ class SearchForecastViewModel: ViewModelType {
     func transfrom(_ input: Input) -> Output {
         
         let errorTracker = ErrorTracker()
+        let activityIndicator = ActivityIndicator()
         
         let items = input.searchTextChanged
             .map({ $0 ?? "" })
@@ -64,6 +66,7 @@ class SearchForecastViewModel: ViewModelType {
                 return searchForecastUseCase
                     .searchForecastObservable(keyword: $0, maximumForecastDay: 7, unit: .celsius)
                     .trackError(errorTracker)
+                    .trackActivity(activityIndicator)
                     .asDriver { _ in Driver.empty() }
             }
             .map {
@@ -80,6 +83,8 @@ class SearchForecastViewModel: ViewModelType {
         .map({ Optional.some($0) })
         .asDriver()
         
-        return Output(weatherForecastItems: items, popupErrorMessage: error)
+        let loading = activityIndicator.asDriver()
+        
+        return Output(weatherForecastItems: items, popupErrorMessage: error, loading: loading)
     }
 }

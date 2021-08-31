@@ -94,6 +94,24 @@ class SearchForecastViewModelTests: XCTestCase {
         XCTAssertEqual(items.last?.count, set2.count)
     }
     
+    func test_inputSearchTextChanged_outputLoadingStatus() {
+        let threshold = 3
+        let (sut, useCase) = makeSUT(searchKeywordCountThreshold: threshold)
+        let (_, output) = makeInputOutput(sut: sut, searchTextChanged: searchTrigger)
+        var loading = [Bool]()
+        
+        disposeBag.insert([
+            output.weatherForecastItems.drive(),
+            output.loading.drive(onNext: { loading.append($0) })
+        ])
+        
+        searchTrigger.accept("55555")
+        useCase.completeWith(items: [], at: 0)
+        
+        XCTAssertEqual(loading, [false, true, false])
+        XCTAssertEqual(useCase.messages.count, 1)
+    }
+    
     func test_inputSearchTextChanged_receiveErrorByUseCase() {
         let threshold = 3
         let (sut, useCase) = makeSUT(searchKeywordCountThreshold: threshold)
