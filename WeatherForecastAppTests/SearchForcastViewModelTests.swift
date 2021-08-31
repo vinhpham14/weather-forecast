@@ -49,6 +49,67 @@ class SearchForecastViewModelTests: XCTestCase {
         XCTAssertNil(items)
     }
     
+    func test_inputSearchTextChanged_doSearchWhileSearchTextCharactersCountIsGreaterThanOrEqualThreshold() {
+        let threshold = 3
+        let (sut, useCase) = makeSUT(searchKeywordCountThreshold: threshold)
+        let (_, output) = makeInputOutput(sut: sut, searchTextChanged: searchTrigger)
+        var items: [[WeatherForecastViewModel]] = []
+        let set1 = (0...3).map({ _ in WeatherForecastItem.random() })
+        let set2 = (0...4).map({ _ in WeatherForecastItem.random() })
+        
+    
+        output.weatherForecastItems
+            .drive(onNext: { items.append($0) })
+            .disposed(by: disposeBag)
+        
+        searchTrigger.accept("333")
+        useCase.completeWith(items: set1, at: 0)
+        
+        searchTrigger.accept("55555")
+        useCase.completeWith(items: set2, at: 1)
+        
+        XCTAssertEqual(useCase.messages.count, 2)
+        XCTAssertEqual(items.count, 2)
+    }
+    
+    func test_inputSearchTextChanged_receiveOnlyLastestResponseWhenTriggerSearchWhileNotFinishRequesting() {
+        let threshold = 3
+        let (sut, useCase) = makeSUT(searchKeywordCountThreshold: threshold)
+        let (_, output) = makeInputOutput(sut: sut, searchTextChanged: searchTrigger)
+        var items: [[WeatherForecastViewModel]] = []
+        let set1 = (0...3).map({ _ in WeatherForecastItem.random() })
+        let set2 = (0...5).map({ _ in WeatherForecastItem.random() })
+        
+        output.weatherForecastItems
+            .drive(onNext: { items.append($0) })
+            .disposed(by: disposeBag)
+        
+        searchTrigger.accept("333")
+        searchTrigger.accept("55555")
+        useCase.completeWith(items: set1, at: 0)
+        useCase.completeWith(items: set2, at: 1)
+        
+        XCTAssertEqual(useCase.messages.count, 2)
+        XCTAssertEqual(items.count, 1)
+        XCTAssertEqual(items.last?.count, set2.count)
+    }
+    
+    func test_inputSearchTextChanged_receiveErrorByUseCase() {
+        let threshold = 3
+        let (sut, useCase) = makeSUT(searchKeywordCountThreshold: threshold)
+        let (_, output) = makeInputOutput(sut: sut, searchTextChanged: searchTrigger)
+        let err = NSError(domain: "any error", code: 0)
+        var capturedErrorString: String?
+        
+        output.weatherForecastItems.drive().disposed(by: disposeBag)
+        output.popupErrorMessage.drive(onNext: { capturedErrorString = $0 }).disposed(by: disposeBag)
+        searchTrigger.accept("5555")
+        useCase.completeWith(error: err, at: 0)
+        
+        XCTAssertEqual(useCase.messages.count, 1)
+        XCTAssertNotNil(capturedErrorString)
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(searchKeywordCountThreshold: Int = 3) -> (sut: SearchForecastViewModel, useCase: MockSearchForecastUseCase) {
@@ -69,6 +130,23 @@ class SearchForecastViewModelTests: XCTestCase {
         let output = sut.transfrom(input)
         return (input, output)
     }
+    
+    private func randomWeatherForecastViewModel() -> WeatherForecastViewModel {
+        return WeatherForecastViewModel(
+            WeatherForecastPresentable(
+                date: randomString(),
+                pressure: randomString(),
+                humidity: randomString(),
+                temperature: randomString(),
+                description: randomString()
+            )
+        )
+    }
+    
+    private func randomString() -> String {
+        let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".map({ String($0) })
+        return (0..<10).reduce("") { str, _ in str + String(letters[Int.random(in: (0..<letters.count))]) }
+    }
 }
 
 
@@ -77,5 +155,28 @@ class MockSearchForecastUseCase: SearchForecastUseCase {
     
     func searchForecast(parameters: SearchParameters, completion: @escaping (SearchForecastUseCaseResult) -> Void) {
         messages.append((parameters, completion))
+    }
+    
+    func completeWith(items: [WeatherForecastItem], at index: Int) {
+        messages[index].completion(.success(items: items))
+    }
+    
+    func completeWith(error: Error, at index: Int) {
+        messages[index].completion(.failure(error))
+    }
+}
+
+
+extension WeatherForecastItem {
+    static func random() -> WeatherForecastItem {
+        let date = Int(Date().timeIntervalSince1970)
+        return WeatherForecastItem(
+            id: UUID(),
+            date: Date.init(timeIntervalSince1970: Double(Int.random(in: (date - 1000)...date))),
+            pressure: Double.random(in: 0...100),
+            humidity: Double.random(in: 0...100),
+            temperature: Double.random(in: 0...100),
+            description: "\(Double.random(in: 0...100))"
+        )
     }
 }

@@ -11,11 +11,19 @@ import RxSwift
 import RxCocoa
 
 
-struct WeatherForecastViewModel {
+struct WeatherForecastViewModel: Equatable {
     private let presentableItem: WeatherForecastPresentable
     
     init(_ item: WeatherForecastPresentable) {
         self.presentableItem = item
+    }
+    
+    static func == (lhs: WeatherForecastViewModel, rhs: WeatherForecastViewModel) -> Bool {
+        lhs.presentableItem.date == rhs.presentableItem.date
+        && lhs.presentableItem.pressure == rhs.presentableItem.pressure
+        && lhs.presentableItem.humidity == rhs.presentableItem.humidity
+        && lhs.presentableItem.temperature == rhs.presentableItem.temperature
+        && lhs.presentableItem.description == rhs.presentableItem.description
     }
 }
 
@@ -34,6 +42,7 @@ class SearchForecastViewModel: ViewModelType {
     
     struct Output {
         let weatherForecastItems: Driver<[WeatherForecastViewModel]>
+        let popupErrorMessage: Driver<String?>
     }
     
     private let searchKeywordCountThreshold: Int
@@ -46,13 +55,16 @@ class SearchForecastViewModel: ViewModelType {
     
     func transfrom(_ input: Input) -> Output {
         
+        let errorTracker = ErrorTracker()
+        
         let items = input.searchTextChanged
             .map({ $0 ?? "" })
-            .filter({ [searchKeywordCountThreshold] in $0.count > searchKeywordCountThreshold })
+            .filter({ [searchKeywordCountThreshold] in $0.count >= searchKeywordCountThreshold })
             .flatMapLatest { [searchForecastUseCase] in
                 return searchForecastUseCase
                     .searchForecastObservable(keyword: $0, maximumForecastDay: 7, unit: .celsius)
-                    .asDriver(onErrorJustReturn: [])
+                    .trackError(errorTracker)
+                    .asDriver { _ in Driver.empty() }
             }
             .map {
                 $0
@@ -60,24 +72,14 @@ class SearchForecastViewModel: ViewModelType {
                     .map({ WeatherForecastViewModel($0) })
             }
         
-        return Output(weatherForecastItems: items)
-    }
-}
-
-
-extension SearchForecastUseCase {
-
-    public func searchForecastObservable(keyword: String, maximumForecastDay: Int, unit: UnitTemperature) -> Single<[WeatherForecastItem]> {
-        return Single<[WeatherForecastItem]>.create { observer in
-            self.searchForecast(parameters: (keyword, maximumForecastDay, unit)) { result in
-                switch result {
-                case let .success(items):
-                    observer(.success(items))
-                case let .failure(err):
-                    observer(.failure(err))
-                }
-            }
-            return Disposables.create { }
-        }
+        let error = errorTracker.map({
+            $0.localizedDescription.isEmpty
+                ? $0.localizedDescription
+                : "Unexpected error"
+        })
+        .map({ Optional.some($0) })
+        .asDriver()
+        
+        return Output(weatherForecastItems: items, popupErrorMessage: error)
     }
 }
